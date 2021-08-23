@@ -1,0 +1,284 @@
+
+ @extends('offers.header')
+
+
+
+ @section('header')
+
+<html>
+    <head>
+        <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+        <script src="{{ asset('js/app.js') }}" defer></script>
+    </head>
+
+  <body style="
+     margin: 0 ;
+
+  font-size: 0.9rem;
+  font-weight: 400;
+  line-height: 1.6;
+  color: #212529;
+  text-align: left;
+  background-color: #278cdf;
+
+
+
+  <?php
+
+    if (App::isLocale('ar')) {
+
+    ?>
+     direction: rtl;
+    <?php
+
+}
+
+?>
+      "
+
+
+  >
+
+
+
+    <div  style=" background-color:  #64aedf;      margin: 115px 470px 200px 500px ; padding: 50px 50px 50px 100px;">
+    <div  style=" margin: 0px 0px 0px 10px ;">
+        <div >
+            <div >
+                <div  ><h1 style="   text-align: center;">{{__(key:'messages.add offer')}} </h1></div>
+
+                <div >
+
+                    @if(Session::has('success'))
+                    <div class="alert alert-success" role="alert">
+                        {{Session::get('success')}}
+                    </div>
+                    @endif
+
+                    <br>
+                    <form enctype="multipart/form-data" >
+                        @csrf
+
+                        <div class="form-group row">
+                            <label for="name" > {{__(key:'messages.Offer_name_ar')}} &nbsp; </label>
+                                <div class="col-md-6">
+                                <input id="name_ar" type="text"  name="name_ar" placeholder="name_ar"  style="padding: 5px 80px 00px 00px;" {{--required--}}>
+                               @error('name_ar')
+                                <small class="form-text text-danger">{{$message}}</small>
+                               @enderror
+
+                            </div>
+                        </div>
+
+                     <div class="form-group row">
+                            <label for="name" > {{__(key:'messages.Offer_name_en')}} &nbsp; </label>
+                        <div class="col-md-6">
+                            <input id="name_en" type="text"  name="name_en" placeholder="name_en"  style="padding: 5px 80px 00px 00px;" {{--required--}}>
+                           @error('name_en')
+                            <small class="form-text text-danger">{{$message}}</small>
+                           @enderror
+
+                        </div>
+                    </div>
+
+
+
+                        <div class="form-group row">
+                            <label for="email" >{{__(key:'messages.Offer_price')}} &nbsp;&nbsp;</label>
+
+                            <div class="col-md-6">
+                                <input id="email" type="text"  name="price" placeholder="price"  style="padding: 5px 80px 00px 00px;" >
+                                @error('price')
+                                <small class="form-text text-danger">{{$message}}</small>
+                                @enderror
+
+                            </div>
+                        </div>
+
+
+                        <div class="form-group row">
+                            <label for="email" >{{__(key:'messages.Offer_details_ar')}}</label>
+
+                            <div class="col-md-6">
+                                <input id="email" type="text"  name="details_ar" placeholder="details_ar" style="padding: 5px 80px 00px 00px;" >
+                                @error('details_ar')
+                                <small class="form-text text-danger">{{$message}}</small>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="email" >{{__(key:'messages.Offer_details_en')}}</label>
+
+                            <div class="col-md-6">
+                                <input id="email" type="text"  name="details_en" placeholder="details_en" style="padding: 5px 80px 00px 00px;" >
+                                @error('details_en')
+                                <small class="form-text text-danger">{{$message}}</small>
+                                @enderror
+                            </div>
+                        </div>
+
+
+                        <div class="form-group row">
+                            <label for="email" >{{__(key:'messages.choose_photo')}}</label>
+
+                            <div class="col-md-6">
+                                <input id="email" type="file"  name="photo" placeholder="photo" style="padding: 5px 80px 00px 00px;" >
+                                @error('photo')
+                                <small class="form-text text-danger">{{$message}}</small>
+                                @enderror
+                            </div>
+                        </div>
+
+
+
+
+                        <div >
+                            <div >
+                                <button id="save_offer" class="btn btn-primary"     style=" margin: 20px 00px 00px 110px ; padding: 5px 20px 5px 20px;  background-color:  #143df5;">
+                                     {{__(key:'messages.Save')}}
+                                </button>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+      </div>
+      @stop
+    </div>
+
+
+
+
+        @section('sctipts')
+
+
+{{--
+                    <script>
+                        $(document).on('click','#save_offer',function(e){
+                            e.preventDefault();
+                        $.ajax({
+                            type: 'POST',
+                            url: "{{route('ajax-offers-store')}}",
+                            data: {
+                                    '_token' : "{{csrf_token()}}",
+                                    'name_ar':$("input[name='name_ar']").val(),
+                                    'name_en':$("input[name='name_en']")val(),
+                                    'price':$("input[name='price']")val(),
+                                    'details_ar':$("input[name='details_ar']")val(),
+                                    'details_en':$("input[name='details_en']")val(),
+                                     //'photo': $("input[name='photo']")val(),
+
+                            },
+                            success: function (data){
+
+                            },
+                            error: function (reject){
+
+                            },
+                        });
+                    });
+
+                    </script>
+--}}
+
+<script>
+jQuery(document).ready(function($){
+
+    //----- Open model CREATE -----//
+    jQuery('#save_offer').click(function () {
+        jQuery('#btn-save').val("add");
+        jQuery('#myForm').trigger("reset");
+        jQuery('#formModal').modal('show');
+    });
+
+    // CREATE
+    $("#save_offer").click(function (e) {
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        e.preventDefault();
+        var formData = {
+            title: jQuery('#title').val(),
+            description: jQuery('#description').val(),
+        };
+        var state = jQuery('#btn-save').val();
+        var type = "POST";
+        var todo_id = jQuery('#todo_id').val();
+        var ajaxurl = 'todo';
+        $.ajax({
+            type: "POST",
+            url: "{{ url('ajax-offers-store') }}",
+            data: formData,
+            dataType: 'json',
+            success: function (data) {
+                var todo = '<tr id="todo' + data.id + '"><td>' + data.id + '</td><td>' + data.title + '</td><td>' + data.description + '</td>';
+                if (state == "add") {
+                    jQuery('#todo-list').append(todo);
+                } else {
+                    jQuery("#todo" + todo_id).replaceWith(todo);
+                }
+                jQuery('#myForm').trigger("reset");
+                jQuery('#formModal').modal('hide')
+            },
+            error: function (data) {
+                console.log(data);
+            }
+        });
+    });
+});
+
+</script>
+
+{{--
+<script>
+
+
+       jQuery('#save_offer').click(function(e){
+          e.preventDefault();
+
+          $.ajaxSetup({
+             headers: {
+                 'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+             }
+         });
+          jQuery.ajax({
+             url: "{{ url('ajax-offers-store') }}",
+             method: 'post',
+             data: {
+                _token = <?php echo csrf_token() ?>,
+                name_ar: jQuery('#name_ar').val(),
+                name_en: jQuery('#name_ar').val(),
+                details_ar: jQuery('#details_ar').val(),
+                details_en: jQuery('#details_ar').val(),
+                price: jQuery('#price').val()
+             },
+             success: function(data){
+                console.log(data);
+             },
+             error: function (reject){
+
+},
+
+             });
+          });
+
+</script>
+--}}
+
+
+
+    @stop
+
+ </body>
+
+</html>
+
+
+
+
+
